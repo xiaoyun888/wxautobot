@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>微信机器人管理系统 - 登录</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#2563eb',
+                        secondary: '#f3f4f6',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .form-input-focus {
+                @apply focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none;
+            }
+            .btn-hover {
+                @apply hover:shadow-md hover:-translate-y-0.5 transition-all duration-200;
+            }
+            .glass-card {
+                @apply bg-white/80 backdrop-blur-lg;
+            }
+            .shake {
+                animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+            }
+            @keyframes shake {
+                10%, 90% { transform: translateX(-1px); }
+                20%, 80% { transform: translateX(2px); }
+                30%, 50%, 70% { transform: translateX(-3px); }
+                40%, 60% { transform: translateX(3px); }
+            }
+            .fade-in {
+                animation: fadeIn 0.3s ease forwards;
+            }
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(-10px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+        }
+    </style>
+</head>
+
+<body class="font-sans min-h-screen flex items-center justify-center p-4 md:p-8 bg-gradient-to-br from-blue-50 to-indigo-50">
+    <div class="w-full max-w-6xl rounded-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row glass-card transition-all duration-300 hover:shadow-3xl">
+        <div class="w-full md:w-3/5 relative h-96 md:h-auto">
+            <div class="absolute inset-0 z-0">
+                <img 
+                    src="https://imgapi.868787.xyz/imgapi/pc.php" 
+                    alt="微信机器人管理系统背景图，展示数据分析和机器人对话界面" 
+                    class="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+                    loading="lazy"
+                >
+            </div>
+            
+            <div class="absolute inset-0 bg-black/15 z-10"></div>
+            
+            <div class="relative z-20 h-full flex flex-col justify-center p-8 text-white">
+                <i class="fa fa-robot text-5xl mb-5 opacity-90 fade-in"></i>
+                <h2 class="text-2xl md:text-3xl font-bold mb-3 opacity-90 fade-in" style="animation-delay: 0.1s">SiverWxBot</h2>
+                <p class="text-base md:text-lg opacity-80 fade-in" style="animation-delay: 0.2s">
+                    高效稳定的微信机器人管理系统，助力自动化运营
+                </p>
+            </div>
+        </div>
+
+        <div class="w-full md:w-1/2 p-6 md:p-10 flex flex-col justify-center">
+            <div class="w-full max-w-sm mx-auto">
+                <div class="mb-8">
+                    <h1 class="text-2xl font-semibold text-gray-800">账户登录</h1>
+                </div>
+
+                <!-- 消息提示区域 -->
+                <div id="message-area" class="mb-5 hidden fade-in">
+                    <div id="success-message" class="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded relative hidden" role="alert">
+                        <span class="block sm:inline"><i class="fa fa-check-circle mr-2"></i>登录成功，正在跳转...</span>
+                    </div>
+                    <div id="error-message" class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded relative hidden" role="alert">
+                        <span class="block sm:inline"><i class="fa fa-exclamation-circle mr-2"></i><span id="error-text">用户名或密码错误</span></span>
+                    </div>
+                </div>
+
+                <form id="login-form" action="/" method="post" class="space-y-5">
+                    <div>
+                        <label for="username" class="block text-sm font-medium text-gray-700 mb-1">用户名</label>
+                        <div class="relative">
+                            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+                                <i class="fa fa-user"></i>
+                            </span>
+                            <input 
+                                type="text" 
+                                id="username" 
+                                name="username" 
+                                required
+                                class="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-lg form-input-focus transition duration-200"
+                                placeholder="请输入用户名"
+                                autocomplete="username"
+                            >
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="password" class="block text-sm font-medium text-gray-700 mb-1">密码</label>
+                        <div class="relative">
+                            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+                                <i class="fa fa-lock"></i>
+                            </span>
+                            <input 
+                                type="password" 
+                                id="password" 
+                                name="password" 
+                                required
+                                class="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-lg form-input-focus transition duration-200"
+                                placeholder="请输入密码"
+                                autocomplete="current-password"
+                            >
+                            <button type="button" id="toggle-password" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none transition-colors" aria-label="切换密码可见性">
+                                <i class="fa fa-eye-slash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <input 
+                                    type="checkbox" 
+                                    id="remember" 
+                                    name="remember" 
+                                    class="w-4 h-4 text-primary focus:ring-primary/30 border-gray-200 rounded transition duration-200"
+                                >
+                                <label for="remember" class="ml-2 text-sm text-gray-600">记住密码</label>
+                            </div>
+                        </div>
+                        <button 
+                            type="submit" 
+                            class="w-full bg-primary text-white font-medium py-2.5 px-4 rounded-lg btn-hover focus:ring-2 focus:ring-primary/50 focus:outline-none"
+                            id="submit-btn"
+                        >
+                            登录管理后台
+                        </button>
+                    </div>
+                </form>
+
+                <div class="text-center text-gray-400 text-xs mt-8">
+                    © 2025 SiverWxBot 微信机器人系统
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 密码显示/隐藏功能
+        const togglePassword = document.getElementById('toggle-password');
+        const passwordInput = document.getElementById('password');
+        
+        togglePassword.addEventListener('click', function() {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            
+            // 切换图标
+            const icon = this.querySelector('i');
+            icon.classList.toggle('fa-eye');
+            icon.classList.toggle('fa-eye-slash');
+            
+            // 更新ARIA标签
+            this.setAttribute('aria-label', type === 'password' ? '显示密码' : '隐藏密码');
+        });
+
+        // 记住密码功能
+        window.addEventListener('load', () => {
+            // 从localStorage加载保存的用户名
+            if (localStorage.getItem('remember') === 'true') {
+                document.getElementById('remember').checked = true;
+                document.getElementById('username').value = localStorage.getItem('username') || '';
+            }
+        });
+
+        // 表单提交处理
+        const loginForm = document.getElementById('login-form');
+        const errorMessage = document.getElementById('error-message');
+        const successMessage = document.getElementById('success-message');
+        const messageArea = document.getElementById('message-area');
+        const usernameInput = document.getElementById('username');
+        const submitBtn = document.getElementById('submit-btn');
+
+        // 检查URL参数中的错误信息
+        const urlParams = new URLSearchParams(window.location.search);
+        const error = urlParams.get('error');
+        const logout = urlParams.get('logout');
+        
+        if (error) {
+            showMessage('error', error);
+        }
+        
+        if (logout === 'success') {
+            showMessage('success', '您已成功退出登录');
+        }
+
+        loginForm.addEventListener('submit', function(e) {
+            // 简单的前端验证
+            if (!usernameInput.value.trim()) {
+                e.preventDefault();
+                showMessage('error', '请输入用户名');
+                usernameInput.focus();
+                return false;
+            }
+            
+            if (!passwordInput.value.trim()) {
+                e.preventDefault();
+                showMessage('error', '请输入密码');
+                passwordInput.focus();
+                return false;
+            }
+            
+            // 保存记住密码状态
+            if (document.getElementById('remember').checked) {
+                localStorage.setItem('remember', 'true');
+                localStorage.setItem('username', usernameInput.value.trim());
+            } else {
+                localStorage.removeItem('remember');
+                localStorage.removeItem('username');
+            }
+            
+            // 提交前禁用按钮防止重复提交
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fa fa-spinner fa-spin mr-2"></i>登录中...';
+        });
+
+        // 显示消息提示
+        function showMessage(type, text) {
+            messageArea.classList.remove('hidden');
+            
+            if (type === 'error') {
+                errorMessage.classList.remove('hidden');
+                successMessage.classList.add('hidden');
+                document.getElementById('error-text').textContent = text;
+                
+                // 添加抖动动画
+                loginForm.classList.add('shake');
+                setTimeout(() => {
+                    loginForm.classList.remove('shake');
+                }, 500);
+            } else {
+                successMessage.classList.remove('hidden');
+                errorMessage.classList.add('hidden');
+            }
+            
+            // 5秒后自动隐藏消息（成功消息可能需要保留到跳转）
+            setTimeout(() => {
+                if (type !== 'success') {
+                    messageArea.classList.add('hidden');
+                }
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
